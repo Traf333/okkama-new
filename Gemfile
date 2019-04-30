@@ -26,3 +26,5 @@ group :production do
   # gem 'puma'
 end
 ruby '2.6.1'
+
+gem "rubocop", "~> 0.68.0"
