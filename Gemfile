@@ -15,6 +15,7 @@ end
 
 group :test, :development do
   gem 'dotenv', '~> 2.4'
+  gem 'pry', '~> 0.12.2'
 end
 
 group :test do
@@ -26,3 +27,5 @@ group :production do
   # gem 'puma'
 end
 ruby '2.6.1'
+
+gem "rubocop", "~> 0.68.0"

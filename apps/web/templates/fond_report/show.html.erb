@@ -1,0 +1,14 @@
+<h1>Fond Reports</h1>
+
+<%=
+  form_for :report, routes.fond_report_path, enctype: 'multipart/form-data' do
+    div do
+      file_field :source
+    end
+    div do
+      file_field :reports, multiple: true, name: 'report[reports][]'
+    end
+
+    submit 'Create'
+  end
+%>
