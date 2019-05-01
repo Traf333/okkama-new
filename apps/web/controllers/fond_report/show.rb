@@ -2,11 +2,11 @@
 
 module Web
   module Controllers
-    module FondReports
-      class Index
+    module FondReport
+      class Show
         include Web::Action
 
-        def call(params); end
+        def call(_params); end
       end
     end
   end

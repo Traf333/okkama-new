@@ -2,8 +2,8 @@
 
 module Web
   module Views
-    module FondReports
-      class Index
+    module FondReport
+      class Show
         include Web::View
       end
     end

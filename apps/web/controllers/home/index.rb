@@ -6,7 +6,7 @@ module Web
       class Index
         include Web::Action
 
-        def call(params); end
+        def call(_params); end
       end
     end
   end
