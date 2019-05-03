@@ -9,9 +9,10 @@ module Web
         include Web::Action
 
         params do
-          required(:report).schema do
+          required(:fond_report).schema do
             required(:source).filled
-            # required(:reports).filled
+            required(:reports).filled
+            required(:encoding).filled
           end
         end
 
@@ -24,11 +25,14 @@ module Web
         private
 
         def generate_report
-          # result = Okkama::Interactors::GenerateFondReport.new(params: params[:report]).call
-          source = CSV.read(params.get(:report, :source, :tempfile), col_sep: ';', headers: true)
-          self.format = :csv
-          self.body = source.to_csv
-          # redirect_to routes.path(:fond_reports)
+          result = GenerateFondReport.new(params: params[:fond_report]).call
+          self.format = :zip
+          self.body = result.zip_file
+          headers.merge!('Content-Disposition' => "attachment; filename=report-#{date_format}.zip")
+        end
+
+        def date_format
+          Time.now.strftime('%d-%m-%Y-%H-%M')
         end
       end
     end

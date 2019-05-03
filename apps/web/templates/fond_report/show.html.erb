@@ -1,12 +1,18 @@
 <h1>Fond Reports</h1>
 
 <%=
-  form_for :report, routes.fond_report_path, enctype: 'multipart/form-data' do
+  form_for :fond_report, routes.path(:fond_report), enctype: 'multipart/form-data' do
     div do
+      label :transactions
       file_field :source
     end
     div do
-      file_field :reports, multiple: true, name: 'report[reports][]'
+      label :reports
+      file_field :reports, multiple: true, name: 'fond_report[reports][]'
+    end
+    div do
+      label :encoding
+      select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']]
     end
 
     submit 'Create'
