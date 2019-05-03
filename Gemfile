@@ -9,6 +9,7 @@ gem 'hanami-model', '~> 1.3'
 gem 'rake'
 gem 'rubocop', '~> 0.68.0'
 gem 'rubocop-performance'
+gem 'rubyzip'
 
 gem 'pg'
 

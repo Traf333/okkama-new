@@ -1,54 +1,67 @@
 # frozen_string_literal: true
 
 require 'hanami/interactor'
+require 'zip'
 
 module Okkama
   module Interactors
     class GenerateFondReport
       include Hanami::Interactor
 
-      expose :csv
+      expose :zip_file
 
-      def initialize(params:)
-        @source = CSV.read(params.dig(:source, :tempfile), col_sep: ';')
-        @report = CSV.read(params.dig(:report, :tempfile), col_sep: ';')
-        @result = []
+      def initialize(source:, reports:)
+        @source = CSV.read(source[:tempfile], col_sep: ';')
+        @reports = reports.map do |report|
+          { list: CSV.read(report[:tempfile], col_sep: ';'), filename: report[:filename] }
+        end
+        @temp_files = []
       end
 
       def call
-        report_items.each(&method(:transaction_search))
-        @csv = build_result_csv
-        # write_file(result, report[:namespace])
-        # write_file(unmatched_transactions, 'unmatched.csv')
+        temp_zip = Tempfile.new(%w[reports .zip])
+        temp_files << temp_zip
+        ::Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
+          reports.each do |report|
+            build_result(report, zip)
+          end
+          create_csv_to_zip(zip, unmatched_transactions, 'unmatched_transactions.csv')
+        end
+        @zip_file = File.read(temp_zip.path)
+        unlink_temp_files
       end
 
       private
 
-      attr_reader :source, :report
-      attr_accessor :result
+      attr_reader :source, :reports
+      attr_accessor :temp_files
 
-      def build_result_csv
-        CSV.generate(col_sep: ';') do |csv|
-          csv << Transaction::HEADER_FIELDS
-          result.each do |transaction|
-            csv << transaction.to_a
-          end
-          unmatched_transactions.each do |transaction|
-            csv << transaction.to_a
-          end
+      def unlink_temp_files
+        temp_files.each do |temp_file|
+          temp_file.close
+          temp_file.unlink
         end
       end
 
-      def report_items
+      # Build Report
+      def report_items(report)
         header = Header.new(fields: report.first)
         report[1..-1].map do |row|
           Source.new(email: row[header.index_email].to_s, name: row[header.index_name].to_s)
         end.compact
       end
 
-      def transaction_search(item)
+      def build_result(report, zip)
+        result = []
+        report_items(report[:list]).each do |item|
+          transaction_search(result, item)
+        end
+        create_csv_to_zip(zip, result, report[:filename])
+      end
+
+      def transaction_search(result, item)
         found_transactions = item.in(transactions)
-        return not_found_transactions(item) unless found_transactions.any?
+        return not_found_transactions(result, item) unless found_transactions.any?
 
         found_transactions.each_with_index do |transaction, index|
           transaction.match_type = index.zero? ? 'matched' : 'repeated'
@@ -57,11 +70,24 @@ module Okkama
         end
       end
 
-      def not_found_transactions(item)
+      def create_csv_to_zip(zip, result, filename)
+        csv_file = Tempfile.new([filename, '.csv'])
+        temp_files << csv_file
+        CSV.open(csv_file.path, 'w', col_sep: ';') do |csv|
+          csv << Transaction::HEADER_FIELDS
+          result.each do |transaction|
+            csv << transaction.to_a
+          end
+        end
+        zip.add(filename, csv_file.path)
+      end
+
+      def not_found_transactions(result, item)
         item.match_type = 'not matched'
         result << item
       end
 
+      # Build Transactions
       def transactions
         @transactions ||= source[1..-1].map { |row| Transaction.new(cleared(row)) }.sort_by(&:donated_at)
       end
@@ -100,18 +126,10 @@ module Okkama
         row[transactions_header.index_type]
       end
 
+      # Missing Transactions
       def unmatched_transactions
         transactions.select { |transaction| transaction.match_type.to_s.empty? }
       end
-
-      # def write_file(result, pathname)
-      #   CSV.open("build/#{Date.today}/#{pathname}", 'w', encoding: 'windows-1251:utf-8', col_sep: ';') do |csv|
-      #     csv << HEADERS
-      #     result.each do |transaction|
-      #       csv << transaction.to_a
-      #     end
-      #   end
-      # end
     end
   end
 end

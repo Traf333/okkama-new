@@ -8,7 +8,7 @@
     end
     div do
       label :report
-      file_field :report
+      file_field :reports, multiple: true, name: 'fond_report[reports][]'
     end
 
     submit 'Create'
