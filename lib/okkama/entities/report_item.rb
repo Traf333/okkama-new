@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Source
+class ReportItem
   attr_accessor :email, :name, :status, :match_type
 
   def initialize(email:, name:, status: nil, match_type: nil)

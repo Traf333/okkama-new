@@ -3,16 +3,16 @@
 <%=
   form_for :fond_report, routes.path(:fond_report), enctype: 'multipart/form-data' do
     div do
-      label :source
+      label :transactions
       file_field :source
     end
     div do
-      label :report
+      label :reports
       file_field :reports, multiple: true, name: 'fond_report[reports][]'
     end
     div do
       label :encoding
-      select :encoding, [['utf-8', 'utf-8'], ['windows-1251', 'windows-1251']]
+      select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']]
     end
 
     submit 'Create'

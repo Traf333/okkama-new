@@ -25,11 +25,10 @@ module Web
         private
 
         def generate_report
-          result = Okkama::Interactors::GenerateFondReport.new(params: params[:fond_report]).call
+          result = GenerateFondReport.new(params: params[:fond_report]).call
           self.format = :zip
           self.body = result.zip_file
-          self.headers.merge!('Content-Disposition' => "attachment; filename=report-#{date_format}.zip")
-          # redirect_to routes.path(:fond_reports)
+          headers.merge!('Content-Disposition' => "attachment; filename=report-#{date_format}.zip")
         end
 
         def date_format
