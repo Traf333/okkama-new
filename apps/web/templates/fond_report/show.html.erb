@@ -1,7 +1,7 @@
 <h1>Fond Reports</h1>
 
 <%=
-  form_for :fond_report, routes.fond_report_path, enctype: 'multipart/form-data' do
+  form_for :fond_report, routes.path(:fond_report), enctype: 'multipart/form-data' do
     div do
       label :source
       file_field :source

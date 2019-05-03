@@ -27,6 +27,7 @@ module Web
           result = Okkama::Interactors::GenerateFondReport.new(params: params[:fond_report]).call
           self.format = :csv
           self.body = result.csv
+          self.headers.merge!('Content-Disposition' => "attachment; filename=report-#{Date.today}.csv")
           # redirect_to routes.path(:fond_reports)
         end
       end

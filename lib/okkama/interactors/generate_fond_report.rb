@@ -28,7 +28,7 @@ module Okkama
       attr_accessor :result
 
       def build_result_csv
-        CSV.generate do |csv|
+        CSV.generate(col_sep: ';') do |csv|
           csv << Transaction::HEADER_FIELDS
           result.each do |transaction|
             csv << transaction.to_a
