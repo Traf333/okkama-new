@@ -142,9 +142,7 @@ module Web
 
         # Specify sources for assets
         #
-        sources << [
-          'assets'
-        ]
+        sources << %w[assets vendor/assets]
       end
 
       ##

@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%= javascript 'jquery-3.4.1.min' %>
+    <%= javascript 'bootstrap' %>
+    <%= stylesheet 'bootstrap' %>
     <title>Web</title>
     <%= favicon %>
-  </head>
   <body>
-    <%= link_to 'Home', routes.path(:root) %>
-    <%= yield %>
+    <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+      <%= link_to 'Okkama', routes.root_path, class: 'navbar-brand' %>
+      <ul class='navbar-nav mr-auto mt-2 mt-lg-0'>
+        <li class='nav-item'>
+          <%= link_to 'Fond reports', routes.fond_report_path, class: 'nav-link' %>
+        </li>
+      </ul>
+    </nav>
+    <div class='container mt-5'>
+      <div class='row'>
+        <div class='col-md-8 offset-2'>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

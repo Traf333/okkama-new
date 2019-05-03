@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.6.1'
 
-gem 'hanami',       '~> 1.3'
+gem 'hanami', '~> 1.3'
 gem 'hanami-model', '~> 1.3'
 gem 'rake'
 gem 'rubocop', '~> 0.68.0'
