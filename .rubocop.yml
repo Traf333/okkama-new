@@ -191,11 +191,11 @@ Layout/ExtraSpacing:
   Description: 'Do not use unnecessary spacing.'
   Enabled: true
 
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   Description: 'Checks the indentation of the first parameter in a method call.'
   Enabled: true
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   Description: >-
     Checks the indentation of the first element in an array
     literal.
@@ -207,7 +207,7 @@ Layout/IndentAssignment:
     right-hand-side of a multi-line assignment.
   Enabled: true
 
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Description: 'Checks the indentation of the first key in a hash literal.'
   Enabled: true
 
