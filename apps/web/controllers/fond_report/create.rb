@@ -9,9 +9,9 @@ module Web
         include Web::Action
 
         params do
-          required(:report).schema do
+          required(:fond_report).schema do
             required(:source).filled
-            # required(:reports).filled
+            required(:report).filled
           end
         end
 
@@ -24,10 +24,9 @@ module Web
         private
 
         def generate_report
-          # result = Okkama::Interactors::GenerateFondReport.new(params: params[:report]).call
-          source = CSV.read(params.get(:report, :source, :tempfile), col_sep: ';', headers: true)
+          result = Okkama::Interactors::GenerateFondReport.new(params: params[:fond_report]).call
           self.format = :csv
-          self.body = source.to_csv
+          self.body = result.csv
           # redirect_to routes.path(:fond_reports)
         end
       end
