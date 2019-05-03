@@ -10,6 +10,10 @@
       label :report
       file_field :reports, multiple: true, name: 'fond_report[reports][]'
     end
+    div do
+      label :encoding
+      select :encoding, [['utf-8', 'utf-8'], ['windows-1251', 'windows-1251']]
+    end
 
     submit 'Create'
   end

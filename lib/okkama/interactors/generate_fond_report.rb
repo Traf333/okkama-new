@@ -10,11 +10,12 @@ module Okkama
 
       expose :zip_file
 
-      def initialize(source:, reports:)
-        @source = CSV.read(source[:tempfile], col_sep: ';')
-        @reports = reports.map do |report|
+      def initialize(params:)
+        @source = CSV.read(params.dig(:source, :tempfile), col_sep: ';')
+        @reports = params[:reports].map do |report|
           { list: CSV.read(report[:tempfile], col_sep: ';'), filename: report[:filename] }
         end
+        @encoding = params[:encoding]
         @temp_files = []
       end
 
@@ -33,7 +34,7 @@ module Okkama
 
       private
 
-      attr_reader :source, :reports
+      attr_reader :source, :reports, :encoding
       attr_accessor :temp_files
 
       def unlink_temp_files
@@ -73,7 +74,7 @@ module Okkama
       def create_csv_to_zip(zip, result, filename)
         csv_file = Tempfile.new([filename, '.csv'])
         temp_files << csv_file
-        CSV.open(csv_file.path, 'w', col_sep: ';') do |csv|
+        CSV.open(csv_file.path, 'w', encoding: encoding, col_sep: ';') do |csv|
           csv << Transaction::HEADER_FIELDS
           result.each do |transaction|
             csv << transaction.to_a
