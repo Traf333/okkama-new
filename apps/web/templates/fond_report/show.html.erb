@@ -1,20 +1,29 @@
-<h1>Fond Reports</h1>
+<h1 class='text-center'>Fond Reports</h1>
 
 <%=
-  form_for :fond_report, routes.path(:fond_report), enctype: 'multipart/form-data' do
-    div do
-      label :transactions
-      file_field :source
+  form_for :fond_report, routes.path(:fond_report), enctype: 'multipart/form-data', class: 'mt-5' do
+    div class: 'form-row' do
+      div class: 'form-group col-md-6' do
+        label :transactions, for: 'sourceFile', class: 'text-muted font-weight-bold'
+        file_field :source, class:'form-control-file', id: 'sourceFile'
+        div class: 'form-text text-muted small' do
+          'Please select a transaction file, the name must consist of English characters'
+        end
+      end
+      div class: 'form-group col-md-6' do
+        label :reports, for: 'reportsFile', class: 'text-muted font-weight-bold'
+        file_field :reports, multiple: true, name: 'fond_report[reports][]', class:'form-control-file', id: 'reportsFile'
+        div class: 'form-text text-muted small' do
+          'Please select report files, the name must consist of English characters'
+        end
+      end
     end
-    div do
-      label :reports
-      file_field :reports, multiple: true, name: 'fond_report[reports][]'
+    div class: 'input-group' do
+      div class: 'input-group-prepend' do
+        label :encoding, class: 'input-group-text'
+      end
+      select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']], class:'custom-select'
     end
-    div do
-      label :encoding
-      select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']]
-    end
-
-    submit 'Create'
+    submit 'Generate reports', class: 'btn btn-dark btn-block mt-4'
   end
 %>
