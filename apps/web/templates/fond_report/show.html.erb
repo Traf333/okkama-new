@@ -7,14 +7,14 @@
         label :transactions, for: 'sourceFile', class: 'text-muted font-weight-bold'
         file_field :source, class:'form-control-file', id: 'sourceFile'
         div class: 'form-text text-muted small' do
-          'Please select a transaction file, the name must consist of English characters'
+          'Please select a transaction file, the name must consist of English characters. Only CSV.'
         end
       end
       div class: 'form-group col-md-6' do
         label :reports, for: 'reportsFile', class: 'text-muted font-weight-bold'
         file_field :reports, multiple: true, name: 'fond_report[reports][]', class:'form-control-file', id: 'reportsFile'
         div class: 'form-text text-muted small' do
-          'Please select report files, the name must consist of English characters'
+          'Please select report files, the name must consist of English characters. Only CSV.'
         end
       end
     end
