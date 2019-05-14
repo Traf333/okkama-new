@@ -61,7 +61,7 @@ class GenerateFondReport
 
     found_transactions.each_with_index do |transaction, index|
       transaction.match_type = index.zero? ? 'matched' : 'repeated'
-      transaction.email = item.email if transaction.email.empty?
+      transaction.email = item.email if transaction.email_empty?
       result << transaction
     end
   end
@@ -84,6 +84,8 @@ class GenerateFondReport
 
   # Missing Transactions
   def unmatched_transactions
-    transactions.items.select { |transaction| transaction.match_type.to_s.empty? }
+    transactions
+      .items
+      .select(&:match_type_empty?)
   end
 end
