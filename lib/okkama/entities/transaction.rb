@@ -13,6 +13,14 @@ class Transaction
     email.to_s.split('@').first.to_s.downcase
   end
 
+  def email_empty?
+    email.to_s.empty?
+  end
+
+  def match_type_empty?
+    match_type.to_s.empty?
+  end
+
   def valid?
     ['Оплата', 'Оплата с созданием подписки'].include?(type)
   end
