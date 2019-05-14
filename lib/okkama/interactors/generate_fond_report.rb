@@ -61,7 +61,7 @@ class GenerateFondReport
 
     found_transactions.each_with_index do |transaction, index|
       transaction.match_type = index.zero? ? 'matched' : 'repeated'
-      transaction.email = item.email if transaction.email.empty?
+      transaction.email = item.email if transaction.email.to_s.empty?
       result << transaction
     end
   end
