@@ -38,7 +38,17 @@ class ReportItem
   end
 
   def match_by_name?(transaction)
-    !name.empty? && !blacklist.match?(transaction.name) && transaction.name == name
+    name_not_empty? &&
+      !blacklist.match?(transaction.name) &&
+      fix_for_comparison(transaction.name) == fix_for_comparison(name)
+  end
+
+  def fix_for_comparison(value)
+    value.strip.downcase.split(' ').sort.join(' ')
+  end
+
+  def name_not_empty?
+    !name.to_s.empty?
   end
 
   def blacklist
