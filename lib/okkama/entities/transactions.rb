@@ -19,7 +19,7 @@ class Transactions
   end
 
   def csv_source
-    @csv_source ||= CSV.read(source[:tempfile], col_sep: ';')
+    @csv_source ||= CSV.parse(ClearCsvFile.new(file: source[:tempfile]).call, col_sep: ';')
   end
 
   def cleared(transaction)

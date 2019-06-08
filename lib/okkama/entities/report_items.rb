@@ -21,6 +21,6 @@ class ReportItems
   end
 
   def csv_report
-    @csv_report ||= CSV.read(report[:tempfile], col_sep: ';')
+    @csv_report ||= CSV.parse(ClearCsvFile.new(file: report[:tempfile]).call, col_sep: ';')
   end
 end
