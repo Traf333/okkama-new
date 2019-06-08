@@ -16,8 +16,19 @@ class ReportItems
 
   def build_report_items
     csv_report[1..-1].map do |row|
-      ReportItem.new(email: row[header.index_email].to_s, name: row[header.index_name].to_s)
+      ReportItem.new(report_item_params(row))
     end.compact
+  end
+
+  def report_item_params(row)
+    {
+      email: fix_to_string(row[header.index_email]),
+      name: fix_to_string(row[header.index_name])
+    }
+  end
+
+  def fix_to_string(value)
+    value.to_s.strip
   end
 
   def csv_report
