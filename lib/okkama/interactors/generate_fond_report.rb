@@ -52,7 +52,7 @@ class GenerateFondReport
     report.items.each do |item|
       transaction_search(result, item)
     end
-    create_csv_to_zip(result, report.filename)
+    create_csv_to_zip(result.sort_by(&:email), report.filename)
   end
 
   def transaction_search(result, item)
@@ -87,5 +87,6 @@ class GenerateFondReport
     transactions
       .items
       .select(&:match_type_empty?)
+      .sort_by(&:email)
   end
 end
