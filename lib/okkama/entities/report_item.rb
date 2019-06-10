@@ -52,6 +52,6 @@ class ReportItem
   end
 
   def blacklist
-    /momentum/i
+    /(momentum|visa cardholder|visa cerdholder|master account|no name)/i
   end
 end
