@@ -19,7 +19,7 @@ class Transactions
   end
 
   def csv_source
-    @csv_source ||= CSV.read(source[:tempfile], col_sep: ';')
+    @csv_source ||= CSV.parse(ClearCsvFile.new(file: source[:tempfile]).call, col_sep: ';')
   end
 
   def cleared(transaction)
@@ -37,11 +37,16 @@ class Transactions
   def fetch_transaction_email(transaction)
     index_of_email = header.index_email
     index_of_payer = header.index_payer
-    transaction[index_of_email].to_s.empty? ? transaction[index_of_payer] : transaction[index_of_email]
+    email_index_of_email = fix_to_string(transaction[index_of_email])
+    email_index_of_email.empty? ? fix_to_string(transaction[index_of_payer]) : email_index_of_email
   end
 
   def fetch_transaction_name(transaction)
-    transaction[header.index_name].to_s
+    fix_to_string(transaction[header.index_name])
+  end
+
+  def fix_to_string(value)
+    value.to_s.strip
   end
 
   def fetch_transaction_donated_at(transaction)

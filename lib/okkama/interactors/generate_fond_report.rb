@@ -42,7 +42,7 @@ class GenerateFondReport
     reports.each do |report|
       files_to_zip << build_result(report)
     end
-    files_to_zip << create_csv_to_zip(unmatched_transactions, "unmatched_#{transactions.filename}")
+    files_to_zip << create_csv_to_zip(not_found_transactions, "not_found_#{transactions.filename}")
     files_to_zip
   end
 
@@ -52,12 +52,12 @@ class GenerateFondReport
     report.items.each do |item|
       transaction_search(result, item)
     end
-    create_csv_to_zip(result, report.filename)
+    create_csv_to_zip(result.sort_by(&:email), report.filename)
   end
 
   def transaction_search(result, item)
     found_transactions = item.in(transactions.items)
-    return not_found_transactions(result, item) unless found_transactions.any?
+    return not_matched_transactions(result, item) unless found_transactions.any?
 
     found_transactions.each_with_index do |transaction, index|
       transaction.match_type = index.zero? ? 'matched' : 'repeated'
@@ -77,15 +77,16 @@ class GenerateFondReport
     { filepath: csv_file.path, filename: filename }
   end
 
-  def not_found_transactions(result, item)
+  def not_matched_transactions(result, item)
     item.match_type = 'not matched'
     result << item
   end
 
   # Missing Transactions
-  def unmatched_transactions
+  def not_found_transactions
     transactions
       .items
       .select(&:match_type_empty?)
+      .sort_by(&:email)
   end
 end
