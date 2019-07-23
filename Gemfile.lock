@@ -209,7 +209,7 @@ DEPENDENCIES
   pry (~> 0.12.2)
   rake
   rspec
-  rubocop (~> 0.68.0)
+  rubocop
   rubocop-performance
   rubyzip
   shotgun

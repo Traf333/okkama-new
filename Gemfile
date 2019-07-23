@@ -7,7 +7,7 @@ ruby '2.6.3'
 gem 'hanami', '~> 1.3'
 gem 'hanami-model', '~> 1.3'
 gem 'rake'
-gem 'rubocop', '~> 0.68.0'
+gem 'rubocop'
 gem 'rubocop-performance'
 gem 'rubyzip'
 
