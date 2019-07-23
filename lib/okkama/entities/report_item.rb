@@ -3,11 +3,12 @@
 class ReportItem
   attr_accessor :email, :name, :status, :match_type
 
-  def initialize(email:, name:, status: nil, match_type: nil)
+  def initialize(email:, name:, type_report:, status: nil, match_type: nil)
     @email = email
     @name = name
     @status = status
     @match_type = match_type
+    @type_report = type_report
   end
 
   def email_prefix
@@ -20,7 +21,7 @@ class ReportItem
 
   def match?(transaction)
     return true if match_by_email?(transaction)
-    return true if match_by_name?(transaction)
+    return true if match_by_name?(transaction) && send_pulse_type?
 
     false
   end
@@ -32,6 +33,8 @@ class ReportItem
   end
 
   private
+
+  attr_reader :type_report
 
   def match_by_email?(transaction)
     !email_prefix.empty? && transaction.email_prefix == email_prefix
@@ -51,7 +54,11 @@ class ReportItem
     !name.to_s.empty?
   end
 
+  def send_pulse_type?
+    type_report == 'report_send_pulse'
+  end
+
   def blacklist
-    /(momentum|visa cardholder|visa cerdholder|master account|no name)/i
+    /(momentum|visa cardholder|visa cerdholder|master account|no name|Анонимно|Друг)/i
   end
 end
