@@ -9,9 +9,10 @@ class GenerateFondReport
   expose :zip_file
 
   def initialize(params:)
+    report_items_class = "ReportItems::#{params[:type_report].split('_')[1..-1].map(&:capitalize).join}"
     @transactions = Transactions.new(source: params[:source])
     @reports = params[:reports].map do |report|
-      ReportItems.new(report: report, type_report: params[:type_report])
+      Object.const_get(report_items_class).new(report: report, type_report: params[:type_report])
     end
     @encoding = params[:encoding]
     @temp_files = TempFiles.new

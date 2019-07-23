@@ -7,7 +7,7 @@ module Header
     end
 
     def index_name
-      fields.index { |str| str.match(/name|имя/i) }
+      raise NotImplementedError
     end
 
     def index_email
