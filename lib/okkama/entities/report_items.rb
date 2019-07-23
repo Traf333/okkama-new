@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class ReportItems
-  def initialize(report:)
+  def initialize(report:, type_report:)
+    header_class = "Header::#{type_report.split('_').map(&:capitalize).join}"
     @report = report
     @filename = report[:filename]
-    @header = Header.new(fields: csv_report.first)
+    @header = Object.const_get(header_class).new(fields: csv_report.first)
     @items = build_report_items
   end
 

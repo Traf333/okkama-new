@@ -11,7 +11,7 @@ class GenerateFondReport
   def initialize(params:)
     @transactions = Transactions.new(source: params[:source])
     @reports = params[:reports].map do |report|
-      ReportItems.new(report: report)
+      ReportItems.new(report: report, type_report: params[:type_report])
     end
     @encoding = params[:encoding]
     @temp_files = TempFiles.new
