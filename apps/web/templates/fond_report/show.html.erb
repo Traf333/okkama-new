@@ -18,11 +18,19 @@
         end
       end
     end
-    div class: 'input-group' do
-      div class: 'input-group-prepend' do
-        label :encoding, class: 'input-group-text'
+    div class: 'form-row' do
+      div class: 'input-group col-md-6' do
+        div class: 'input-group-prepend' do
+          label :encoding, class: 'input-group-text'
+        end
+        select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']], class:'custom-select'
       end
-      select :encoding, [['UTF 8', 'utf-8'], ['Windows 1251', 'windows-1251']], class:'custom-select'
+      div class: 'input-group col-md-6' do
+        div class: 'input-group-prepend' do
+          label 'Type of report', class: 'input-group-text'
+        end
+        select :type_report, [['SendPulse', 'report_send_pulse'], ['Mailchimp', 'report_mail_chimp']], class:'custom-select'
+      end
     end
     submit 'Generate reports', class: 'btn btn-dark btn-block mt-4'
   end

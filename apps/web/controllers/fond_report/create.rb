@@ -13,6 +13,7 @@ module Web
             required(:source).filled
             required(:reports).filled
             required(:encoding).filled
+            required(:type_report).filled
           end
         end
 

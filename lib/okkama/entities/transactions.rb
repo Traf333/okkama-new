@@ -4,7 +4,7 @@ class Transactions
   def initialize(source:)
     @source = source
     @filename = source[:filename]
-    @header = Header.new(fields: csv_source.first)
+    @header = Header::Transaction.new(fields: csv_source.first)
     @items = build_source_items
   end
 

@@ -6,7 +6,7 @@ class ClearCsvFile
   end
 
   def call
-    File.read(file).gsub(/\n+|\r+/, "\n").squeeze("\n").strip
+    File.read(file).gsub(/\n+|\r+/, "\n").tr(',', ';').tr('"', '').squeeze("\n").strip
   end
 
   private
