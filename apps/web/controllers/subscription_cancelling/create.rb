@@ -18,7 +18,7 @@ module Web
         def call(params)
           return generate_report if params.valid?
 
-          # redirect_to routes.path(:subscription_cancelling)
+          redirect_to routes.path(:subscription_cancelling)
         end
 
         private
