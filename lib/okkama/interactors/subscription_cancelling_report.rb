@@ -23,7 +23,7 @@ class SubscriptionCancellingReport
 
   def call
     @body = CSV.generate(col_sep: ';') do |csv|
-      csv << ['Email', 'Статус']
+      csv << %w[Email Status]
       transactions.each do |item|
         csv << [item['Email'], matched?(item) ? 'matched' : nil]
       end
