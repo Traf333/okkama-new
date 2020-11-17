@@ -18,6 +18,7 @@ group :development do
   # See: http://hanamirb.org/guides/projects/code-reloading
   gem 'hanami-webconsole'
   gem 'shotgun', platforms: :ruby
+  gem 'byebug'
 end
 
 group :test, :development do

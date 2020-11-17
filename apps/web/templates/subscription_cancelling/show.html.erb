@@ -1,0 +1,23 @@
+<h1 class='text-center'>Fond Reports</h1>
+
+<%=
+  form_for :subscription_cancelling, routes.path(:subscription_cancelling), enctype: 'multipart/form-data', class: 'mt-5' do
+    div class: 'form-row' do
+      div class: 'form-group col-md-6' do
+        label :transactions, class: 'text-muted font-weight-bold'
+        file_field :transactions, class: 'form-control-file', accept: ".csv"
+        div class: 'form-text text-muted small' do
+          'Please select a CloudPayment file, the file name must consist of English characters. Only CSV.'
+        end
+      end
+      div class: 'form-group col-md-6' do
+        label :report, class: 'text-muted font-weight-bold'
+        file_field :report, class: 'form-control-file', accept: ".csv"
+        div class: 'form-text text-muted small' do
+          'Please select SendPulse report, the file name must consist of English characters. Only CSV.'
+        end
+      end
+    end
+    submit 'Generate report', class: 'btn btn-dark btn-block mt-4'
+  end
+%>

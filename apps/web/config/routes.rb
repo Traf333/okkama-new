@@ -8,3 +8,4 @@
 
 root to: 'home#index'
 resource :fond_report, only: %i[create show]
+resource :subscription_cancelling, only: %i[create show]
