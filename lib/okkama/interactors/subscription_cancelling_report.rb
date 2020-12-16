@@ -18,7 +18,7 @@ class SubscriptionCancellingReport
     options = { headers: true, encoding: 'utf-8' }
     options[:col_sep] = ';' unless params[:type_report] == 'report_mail_chimp'
 
-    CSV.foreach(params[:report][:tempfile].path, options) do |row|
+    CSV.parse(params[:report][:tempfile].read.force_encoding('UTF-8'), options).each do |row|
       if params[:type_report] == 'report_mail_chimp'
         @reports << row.to_hash['Email Address'].strip if row.to_hash['TAGS'].to_s.include?('"Рекуррент"')
       else

@@ -25,8 +25,6 @@ module Web
         private
 
         def generate_report
-          # byebug
-
           result = SubscriptionCancellingReport.new(params: params[:subscription_cancelling]).call
           self.format = :csv
           self.body = result.body
