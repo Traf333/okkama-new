@@ -15,9 +15,8 @@ class SubscriptionCancellingReport
       @transactions << row.to_hash.slice('Email', 'Статус')
     end
 
-    options = { headers: true }
+    options = { headers: true, encoding: 'utf-8' }
     options[:col_sep] = ';' unless params[:type_report] == 'report_mail_chimp'
-    options[:encoding] = 'utf-8' if params[:type_report] == 'report_mail_chimp'
 
     CSV.foreach(params[:report][:tempfile].path, options) do |row|
       if params[:type_report] == 'report_mail_chimp'
