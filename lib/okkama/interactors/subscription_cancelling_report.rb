@@ -12,11 +12,11 @@ class SubscriptionCancellingReport
     @transactions = []
     @reports = []
     puts 'reading transactions======='
-    CSV.foreach(params[:transactions][:tempfile].path, headers: true, col_sep: ';', encoding: 'utf-8') do |row|
+    CSV.parse(params[:transactions][:tempfile].read.force_encoding('UTF-8'), headers: true, col_sep: ';', encoding: 'utf-8') do |row|
       @transactions << row.to_hash.slice('Email', 'Статус')
     end
 
-    options = { headers: true, encoding: 'utf-8' }
+    options = { headers: true }
     options[:col_sep] = ';' unless params[:type_report] == 'report_mail_chimp'
 
     puts 'reading reportss======='
