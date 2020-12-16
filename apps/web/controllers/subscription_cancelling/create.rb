@@ -12,6 +12,7 @@ module Web
           required(:subscription_cancelling).schema do
             required(:transactions).filled
             required(:report).filled
+            required(:type_report).filled
           end
         end
 
@@ -24,6 +25,8 @@ module Web
         private
 
         def generate_report
+          # byebug
+
           result = SubscriptionCancellingReport.new(params: params[:subscription_cancelling]).call
           self.format = :csv
           self.body = result.body

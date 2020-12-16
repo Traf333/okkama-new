@@ -14,8 +14,16 @@ class SubscriptionCancellingReport
     CSV.foreach(params[:transactions][:tempfile].path, headers: true, col_sep: ';') do |row|
       @transactions << row.to_hash.slice('Email', 'Статус')
     end
-    CSV.foreach(params[:report][:tempfile].path, headers: true, col_sep: ';') do |row|
-      @reports << row.to_hash[' email'].strip
+
+    options = { headers: true }
+    options[:col_sep] = ';' unless params[:type_report] == 'report_mail_chimp'
+
+    CSV.foreach(params[:report][:tempfile].path, options) do |row|
+      if params[:type_report] == 'report_mail_chimp'
+        @reports << row.to_hash['Email Address'].strip if row.to_hash['TAGS'].to_s.include?('"Рекуррент"')
+      else
+        @reports << row.to_hash[' email'].strip
+      end
     end
 
     @matched = []
@@ -25,7 +33,7 @@ class SubscriptionCancellingReport
     @body = CSV.generate(col_sep: ';') do |csv|
       csv << %w[Email Status]
       transactions.each do |item|
-        csv << [item['Email'], matched?(item) ? 'matched' : nil]
+        csv << [email(item), matched?(item) ? 'matched' : nil]
       end
     end
   end
@@ -35,10 +43,14 @@ class SubscriptionCancellingReport
   attr_reader :transactions, :reports, :matched
 
   def matched?(item)
-    item['Статус'] == 'Отменена' && !other_subscription?(item['Email']) && reports.include?(item['Email'])
+    %w[Отменена Отклонена].include?(item['Статус']) && !other_subscription?(email(item)) && reports.include?(email(item))
   end
 
   def other_subscription?(email)
-    transactions.any? { |i| i['Email'] == email && %w[Работает Просрочена].include?(i['Статус']) }
+    transactions.any? { |i| email(i) == email && %w[Работает Просрочена].include?(i['Статус']) }
+  end
+
+  def email(item)
+    item['Email'] || item['Email Address']
   end
 end

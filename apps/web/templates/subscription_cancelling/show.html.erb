@@ -3,6 +3,15 @@
 <%=
   form_for :subscription_cancelling, routes.path(:subscription_cancelling), enctype: 'multipart/form-data', class: 'mt-5' do
     div class: 'form-row' do
+      div class: 'input-group col-md-6' do
+        div class: 'input-group-prepend' do
+          label 'Type of report', class: 'input-group-text'
+        end
+        select :type_report, [['SendPulse', 'report_send_pulse'], ['Mailchimp', 'report_mail_chimp']], class:'custom-select'
+      end
+    end
+
+    div class: 'form-row' do
       div class: 'form-group col-md-6' do
         label :transactions, class: 'text-muted font-weight-bold'
         file_field :transactions, class: 'form-control-file', accept: ".csv"
@@ -14,7 +23,7 @@
         label :report, class: 'text-muted font-weight-bold'
         file_field :report, class: 'form-control-file', accept: ".csv"
         div class: 'form-text text-muted small' do
-          'Please select SendPulse report, the file name must consist of English characters. Only CSV.'
+          'Please select SendPulse or Mailchimp report, the file name must consist of English characters. Only CSV.'
         end
       end
     end
